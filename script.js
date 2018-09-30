@@ -13,24 +13,32 @@ var uiContoller = (function(){
             };
         }
     }
-
 })();
 
 
 var appController = (function(budgetCntrl, uiCntrl){
    
-    var appAddItem = function(){
-				var input = uiCntrl.getInput()
-				console.log(input)
-    }
-    document.querySelector('.add__btn').addEventListener('click', appAddItem)
+		var eventListeners = function(){
+			document.querySelector('.add__btn').addEventListener('click', appAddItem)
 
-    document.addEventListener('keypress', function(evn){
-        if(evn.keyCode == 13){
-            appAddItem();
-        }
-    })
+			document.addEventListener('keypress', function(evn){
+					if(evn.keyCode == 13){
+							appAddItem();
+					}
+			})
+		}
+
+		var appAddItem = function(){
+			var input = uiCntrl.getInput()
+			console.log(input)
+		}
+
+		return {
+			init: function(){
+				return eventListeners();
+			}
+		}
 
 })(budgetController, uiContoller);
 
-
+appController.init();
