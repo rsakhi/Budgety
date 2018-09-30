@@ -1,28 +1,35 @@
 var budgetController = (function(){
-    var x = 5
-    console.log("BudgetCntl");
-
-    return {
-        setData: function(val){
-            x = val
-        },
-
-        getData: function(){
-            return x;
-        }
-    }
+    
 })();
 
 
 var uiContoller = (function(){
-    console.log("UIcntm");
+    return {
+        getInput: function(){
+            return {
+                type: document.querySelector('.add__type').value,
+                description: document.querySelector('.add__description').value,
+                value: document.querySelector('.add__value').value,
+            };
+        }
+    }
+
 })();
 
 
 var appController = (function(budgetCntrl, uiCntrl){
-    budgetCntrl.setData(4);
-    var y = budgetCntrl.getData();
-    console.log("App" + y);
+   
+    var appAddItem = function(){
+				var input = uiCntrl.getInput()
+				console.log(input)
+    }
+    document.querySelector('.add__btn').addEventListener('click', appAddItem)
+
+    document.addEventListener('keypress', function(evn){
+        if(evn.keyCode == 13){
+            appAddItem();
+        }
+    })
 
 })(budgetController, uiContoller);
 
