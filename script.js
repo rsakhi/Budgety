@@ -43,6 +43,12 @@ var budgetController = (function(){
 
 
 var uiContoller = (function(){
+		function resetData(){
+			document.querySelector('.add__type').value = "income";
+       document.querySelector('.add__description').value = "";
+       document.querySelector('.add__value').value = "";
+		}
+
     return {
         getInput: function(){
             return {
@@ -67,7 +73,10 @@ var uiContoller = (function(){
 							newHtml = newHtml.replace('%value%', obj.value);
 
 							document.querySelector(element).insertAdjacentHTML("beforeend", newHtml);
+							resetData();
 						}
+
+
     }
 })();
 
