@@ -54,7 +54,7 @@ var uiContoller = (function(){
             return {
                 type: document.querySelector('.add__type').value,
                 description: document.querySelector('.add__description').value,
-                value: document.querySelector('.add__value').value,
+                value: parseFloat(document.querySelector('.add__value').value)
             };
 				},
 				
@@ -94,10 +94,13 @@ var appController = (function(budgetCntrl, uiCntrl){
 		}
 
 		var appAddItem = function(){
-			var input = uiCntrl.getInput()
-			var item = budgetCntrl.addItem(input.type,input.description,input.value);
-			uiCntrl.addListItem(item,input.type);
-			console.log(item)
+      var input, item;
+      input = uiCntrl.getInput()
+      if(input.description != "" && !isNaN(input.value) && input.value > 0){
+        item = budgetCntrl.addItem(input.type,input.description,input.value);
+        uiCntrl.addListItem(item,input.type);
+        console.log(item)
+      }
 		}
 
 		return {
