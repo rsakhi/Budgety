@@ -97,7 +97,7 @@ var uiContoller = (function(){
 })();
 
 
-var appController = (function(budgetCntrl, uiCntrl){
+var appController = (function(budgetCtrl, uiCtrl){
    
 		var eventListeners = function(){
 			document.querySelector('.add__btn').addEventListener('click', appAddItem)
@@ -111,9 +111,9 @@ var appController = (function(budgetCntrl, uiCntrl){
 
 		var appAddItem = function(){
       var input, item;
-      input = uiCntrl.getInput()
+      input = uiCtrl.getInput()
       if(input.description != "" && !isNaN(input.value) && input.value > 0){
-        item = budgetCntrl.addItem(input.type,input.description,input.value);
+        item = budgetCtrl.addItem(input.type,input.description,input.value);
         uiCntrl.addListItem(item,input.type);
         console.log(item)
       }
