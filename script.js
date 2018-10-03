@@ -74,31 +74,38 @@ var uiContoller = (function(){
 		}
 
     return {
-        getInput: function(){
-            return {
-                type: document.querySelector('.add__type').value,
-                description: document.querySelector('.add__description').value,
-                value: parseFloat(document.querySelector('.add__value').value)
-            };
-				},
-				
-				addListItem: function(obj, type){
-							var element;
-							if(type == "income"){
-								element = '.income__list'
-								var html = '<div class="item clearfix" id="income-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
-							}else{
-								element = '.expenses__list'
-								var html = '<div class="item clearfix" id="expense-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">- %value%</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
-							}
-							
-							var newHtml = html.replace('%id%', obj.id);
-							newHtml = newHtml.replace('%description%', obj.description);
-							newHtml = newHtml.replace('%value%', obj.value);
+      getInput: function(){
+        return {
+          type: document.querySelector('.add__type').value,
+          description: document.querySelector('.add__description').value,
+          value: parseFloat(document.querySelector('.add__value').value)
+        };
+      },
+      
+      addListItem: function(obj, type){
+        var element;
+        if(type == "income"){
+          element = '.income__list'
+          var html = '<div class="item clearfix" id="income-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
+        }else{
+          element = '.expenses__list'
+          var html = '<div class="item clearfix" id="expense-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">- %value%</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
+        }
+        
+        var newHtml = html.replace('%id%', obj.id);
+        newHtml = newHtml.replace('%description%', obj.description);
+        newHtml = newHtml.replace('%value%', obj.value);
 
-							document.querySelector(element).insertAdjacentHTML("beforeend", newHtml);
-							resetData();
-						}
+        document.querySelector(element).insertAdjacentHTML("beforeend", newHtml);
+        resetData();
+      },
+
+      updateBudget: function(obj){
+        document.querySelector('.budget__value').innerText = obj.budget
+        document.querySelector('.budget__income--value').innerText = obj.income
+        document.querySelector('.budget__expenses--value').innerText = obj.expense
+        document.querySelector('.budget__value').innerText = obj.budget
+      },
     }
 })();
 
@@ -111,17 +118,10 @@ var appController = (function(budgetCtrl, uiCtrl){
 			document.addEventListener('keypress', function(evn){
         if(evn.keyCode == 13){
           appAddItem();
-          calculateBudget();
         }
 			})
-		}
-
-    function calculateBudget(){
-      budgetCtrl.calculateAllBudget();
-      var totalBudget = budgetCtrl.getBudget();
-      console.log(totalBudget);
     }
-
+    
 		var appAddItem = function(){
       var input, item;
       input = uiCtrl.getInput()
@@ -129,8 +129,17 @@ var appController = (function(budgetCtrl, uiCtrl){
         item = budgetCtrl.addItem(input.type,input.description,input.value);
         uiCtrl.addListItem(item,input.type);
         console.log(item)
+        calculateBudget();
       }
-		}
+    }
+    
+    var calculateBudget = function(){
+      budgetCtrl.calculateAllBudget();
+      var totalBudget = budgetCtrl.getBudget();
+      uiContoller.updateBudget(totalBudget)
+
+      console.log(totalBudget);
+    }
 
 		return {
 			init: function(){
