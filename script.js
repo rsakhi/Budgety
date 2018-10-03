@@ -14,7 +14,7 @@ var budgetController = (function(){
     var calculateBudget = function(type){
       var sum = 0
       data.allItems[type].forEach(function(cur){
-        sum = sum + cur
+        sum = sum + cur.value
       })
       data.totals[type] = sum
      }
@@ -49,10 +49,14 @@ var budgetController = (function(){
 			},
 
       calculateAllBudget: function(){
-        calculateAllBudget(income);
-        calculateAllBudget(expense);
+        calculateBudget("income");
+        calculateBudget("expense");
         data.totals.budget = data.totals.income - data.totals.expense
         data.totals.budgetPersentage = data.totals.budget/100;
+      },
+
+      getBudget: function(){
+        return data.totals;
       },
 
  			getData: function(){
@@ -95,8 +99,6 @@ var uiContoller = (function(){
 							document.querySelector(element).insertAdjacentHTML("beforeend", newHtml);
 							resetData();
 						}
-
-
     }
 })();
 
@@ -107,18 +109,25 @@ var appController = (function(budgetCtrl, uiCtrl){
 			document.querySelector('.add__btn').addEventListener('click', appAddItem)
 
 			document.addEventListener('keypress', function(evn){
-					if(evn.keyCode == 13){
-							appAddItem();
-					}
+        if(evn.keyCode == 13){
+          appAddItem();
+          calculateBudget();
+        }
 			})
 		}
+
+    function calculateBudget(){
+      budgetCtrl.calculateAllBudget();
+      var totalBudget = budgetCtrl.getBudget();
+      console.log(totalBudget);
+    }
 
 		var appAddItem = function(){
       var input, item;
       input = uiCtrl.getInput()
       if(input.description != "" && !isNaN(input.value) && input.value > 0){
         item = budgetCtrl.addItem(input.type,input.description,input.value);
-        uiCntrl.addListItem(item,input.type);
+        uiCtrl.addListItem(item,input.type);
         console.log(item)
       }
 		}
