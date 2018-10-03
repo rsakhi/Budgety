@@ -25,7 +25,9 @@ var budgetController = (function(){
 			},
 			totals: {
         income: 0,
-        expense: 0
+        expense: 0,
+        budget: 0,
+        budgetPersentage: -1
       }
 		};
 		return {
@@ -49,6 +51,8 @@ var budgetController = (function(){
       calculateAllBudget: function(){
         calculateAllBudget(income);
         calculateAllBudget(expense);
+        data.totals.budget = data.totals.income - data.totals.expense
+        data.totals.budgetPersentage = data.totals.budget/100;
       },
 
  			getData: function(){
