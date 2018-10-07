@@ -52,7 +52,9 @@ var budgetController = (function(){
         calculateBudget("income");
         calculateBudget("expense");
         data.totals.budget = data.totals.income - data.totals.expense
-        data.totals.budgetPersentage = data.totals.budget/100;
+        if(data.totals.income){
+          data.totals.budgetPersentage = Math.round((data.totals.expense/data.totals.income) *100);
+        }
       },
 
       getBudget: function(){
@@ -100,7 +102,7 @@ var uiContoller = (function(){
         resetData();
       },
 
-      updateBudget: function(obj){
+      displayBudget: function(obj){
         document.querySelector('.budget__value').innerText = obj.budget
         document.querySelector('.budget__income--value').innerText = obj.income
         document.querySelector('.budget__expenses--value').innerText = obj.expense
@@ -136,7 +138,7 @@ var appController = (function(budgetCtrl, uiCtrl){
     var calculateBudget = function(){
       budgetCtrl.calculateAllBudget();
       var totalBudget = budgetCtrl.getBudget();
-      uiContoller.updateBudget(totalBudget)
+      uiContoller.displayBudget(totalBudget)
 
       console.log(totalBudget);
     }
