@@ -106,7 +106,7 @@ var uiContoller = (function(){
         document.querySelector('.budget__value').innerText = obj.budget
         document.querySelector('.budget__income--value').innerText = obj.income
         document.querySelector('.budget__expenses--value').innerText = obj.expense
-        document.querySelector('.budget__value').innerText = obj.budget
+        document.querySelector('.budget__expenses--percentage').innerText = obj.budgetPersentage >= 0 ? obj.budgetPersentage : 0;
       },
     }
 })();
@@ -145,7 +145,13 @@ var appController = (function(budgetCtrl, uiCtrl){
 
 		return {
 			init: function(){
-				return eventListeners();
+        uiContoller.displayBudget({
+          budget: 0,
+          income: 0,
+          expense: 0,
+          budgetPersentage: -1
+        });
+				eventListeners();
 			}
 		}
 
